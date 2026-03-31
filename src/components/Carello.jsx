@@ -55,6 +55,21 @@ export default function ListShop() {
 
 
     }
+    function updateQuantity (product, newQuantity) {
+        setAddedProducts(prev =>{
+            return prev.map(p => {
+                if(p.name === product.name){
+                    return {
+                        ...p,
+                        quantity: newQuantity
+                    }
+                }else {
+                    return p
+                }
+            }).filter(p => p.quantity > 0)
+        })
+
+    }
 
     const Totale = addedProducts.reduce((acc,p)=>{
         return acc + p.price*p.quantity
@@ -84,14 +99,14 @@ export default function ListShop() {
                 <ul>
                     {addedProducts.map((a, index) => {
                         return (
-                            <>
+
                                 <li key={index}>Prodotto:{a.name}
                                     <p>prezzo:{a.price}</p>
                                     <p>Quantita:</p>
-                                </li>
-                                    <input type="number" value={a.quantity} onChange={e => parseInt(e.target.value)} />
+                                    <input type="number" value={a.quantity} onChange={e => updateQuantity(a, parseInt(e.target.value))|| 0} />
                                     <button onClick={()=>removeFromCart(a)}>Rimuovi prodotto</button>
-                            </>
+                                </li>
+
                         )
                     })}
                 </ul>
